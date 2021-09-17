@@ -25,6 +25,9 @@ app.use(express.json());
 
 // Endpoints Services
 
+app.use('/', (req, res) => {
+    res.send('API of Experiments');
+});
 // Questions
 app.use('/api/questions', questionRouter);
 
