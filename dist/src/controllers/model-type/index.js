@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const services_1 = require("./services");
+const modelTypeRouter = (0, express_1.Router)();
+modelTypeRouter.post('/', services_1.createModelType);
+modelTypeRouter.get('/', services_1.allModelTypes);
+modelTypeRouter.get('/:id', services_1.modelById);
+modelTypeRouter.put('/:id', services_1.modifyById);
+modelTypeRouter.delete('/:id', services_1.removeModel);
+exports.default = modelTypeRouter;

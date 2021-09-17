@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const services_1 = require("./services");
+const experimentRouter = (0, express_1.Router)();
+experimentRouter.post('/', services_1.createExperiment);
+experimentRouter.get('/', services_1.allExperiments);
+experimentRouter.get('/:id', services_1.experimentById);
+experimentRouter.put('/:id', services_1.modifyById);
+experimentRouter.delete('/:id', services_1.removeExperiment);
+exports.default = experimentRouter;
