@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import multer from '@src/libs/multer';
+import multer from '../../libs/multer';
 import { allImages, removeImage, saveImage } from './services';
 
 const imageRouter = Router();

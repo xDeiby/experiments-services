@@ -4,7 +4,7 @@ import cors from 'cors';
 import path from 'path';
 import { PORT } from './config/settings';
 import unknownEndpoint from './middlewares/unknownEndpoint';
-import '@src/database';
+import './database';
 import errorHandler from './middlewares/errorHandler';
 import questionRouter from './controllers/question';
 import sectionRouter from './controllers/section';

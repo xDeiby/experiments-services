@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import Experiment, { IExperiment } from '@src/models/Experiment';
+import Experiment, { IExperiment } from '../../models/Experiment';
 
 // New Experiment
 function createExperiment(req: Request, res: Response, next: NextFunction): void {

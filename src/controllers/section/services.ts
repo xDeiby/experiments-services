@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import Section, { ISection } from '@src/models/Section';
+import Section, { ISection } from '../../models/Section';
 
 // New Question
 function newSection(req: Request, res: Response, next: NextFunction): void {

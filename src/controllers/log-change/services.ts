@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import LogChange, { ILogChange } from '@src/models/LogChange';
+import LogChange, { ILogChange } from '../../models/LogChange';
 
 // TODO: Los servicios de cada service.ts son refactorizables, se puede crear una clase abstracta y cada service implementa los metodos abstractos (Hacer despues...)
 

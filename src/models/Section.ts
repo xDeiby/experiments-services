@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { Document, model, Schema } from 'mongoose';
 // eslint-disable-next-line import/no-cycle
-import { defaultQuestion } from '@src/utils/defaultEntitys';
+import { defaultQuestion } from '../utils/defaultEntitys';
 import Question from './Question';
 
 // Type Sections

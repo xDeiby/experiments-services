@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import ModelType from '@src/models/ModelType';
-import Experiment from '@src/models/Experiment';
+import ModelType from '../../models/ModelType';
+import Experiment from '../../models/Experiment';
 
 // New Model Type
 async function createModelType(req: Request, res: Response, next: NextFunction): Promise<void> {

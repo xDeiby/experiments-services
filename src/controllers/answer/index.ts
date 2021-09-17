@@ -3,12 +3,12 @@
 /* eslint-disable no-underscore-dangle */
 
 import { Router, Request, Response, NextFunction } from 'express';
-import Answer from '@src/models/Answer';
-import Experiment from '@src/models/Experiment';
-import ModelType from '@src/models/ModelType';
-import Question from '@src/models/Question';
-import Section, { ETypeSection } from '@src/models/Section';
-import ImageModel from '@src/models/ImageModel';
+import Answer from '../../models/Answer';
+import Experiment from '../../models/Experiment';
+import ModelType from '../../models/ModelType';
+import Question from '../../models/Question';
+import Section, { ETypeSection } from '../../models/Section';
+import ImageModel from '../../models/ImageModel';
 
 const answerRouter = Router();
 

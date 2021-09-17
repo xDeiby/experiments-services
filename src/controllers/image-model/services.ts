@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import fs from 'fs-extra';
 import path from 'path';
-import ImageModel from '@src/models/ImageModel';
+import ImageModel from '../../models/ImageModel';
 
 // Save Image
 const saveImage = (req: Request, res: Response, next: NextFunction): void => {

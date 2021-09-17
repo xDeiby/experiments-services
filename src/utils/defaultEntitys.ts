@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // These basic models are used to initialize other models. For example, when creating a section, it will be created with the 'Question' defined by default in this file.
 
-import { ETypeQuestion } from '@src/models/Question';
+import { ETypeQuestion } from '../models/Question';
 // eslint-disable-next-line import/no-cycle
-import { ETypeSection } from '@src/models/Section';
+import { ETypeSection } from '../models/Section';
 
 // Default Question
 const defaultQuestion = (experiment: string, section: string, typeSection: ETypeSection = ETypeSection.SURVEY) => ({

@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 import { Document, Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
-import { defaultSection } from '@src/utils/defaultEntitys';
+import { defaultSection } from '../utils/defaultEntitys';
 import Section, { ETypeSection } from './Section';
 
 // Structure of Experiment
