@@ -62,7 +62,7 @@ sectionSchema.pre('save', async function (next) {
     try {
         const newQuestion = new Question(defaultQuest);
         await newQuestion.save();
-    } catch (err) {
+    } catch (err: any) {
         next(err);
     }
 
