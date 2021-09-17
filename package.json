@@ -4,7 +4,7 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "start": "ts-node src/index.ts",
+        "start": "node dist/src/index.js",
         "start:dev": "nodemon",
         "test": "jest",
         "build": "tsc -p tsconfig.prod.json",
