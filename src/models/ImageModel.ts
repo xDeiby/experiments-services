@@ -6,6 +6,7 @@ export interface IImageModel extends Document {
     title: string;
     description: string;
     pathImage: string;
+    cloudinaryId: string;
     modelJson: string;
     quiz: string;
     experiment: string;
@@ -24,6 +25,12 @@ const imageSchema = new Schema({
     pathImage: {
         type: String,
         required: true,
+        unique: true,
+    },
+    cloudinaryId: {
+        type: String,
+        required: true,
+        unique: true,
     },
     modelJson: {
         type: String,
