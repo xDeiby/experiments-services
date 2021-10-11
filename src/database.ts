@@ -1,12 +1,10 @@
 import mongoose from 'mongoose';
-import { MONGODB_URI } from './config/settings';
+import { URI } from './config/settings';
 import cleanObject from './utils/cleanObject';
-
-const DEFAULT_URI = 'mongodb://localhost/websocket-app';
 
 // Connect to mongoDB and config params
 mongoose
-    .connect(MONGODB_URI || DEFAULT_URI, {
+    .connect(URI as string, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
