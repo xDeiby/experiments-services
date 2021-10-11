@@ -61,4 +61,29 @@ const removeImage = async (req: Request, res: Response, next: NextFunction): Pro
     }
 };
 
-export { saveImage, allImages, removeImage };
+const modifyImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { id } = req.params;
+    const { body, file } = req;
+
+    let imageResult;
+    try {
+        if (file) {
+            // TODO: Arreglar
+            const removedImg = await ImageModel.findById(id);
+            await cloudinaryV2.uploader.destroy(removedImg!.cloudinaryId);
+            imageResult = await cloudinaryV2.uploader.upload(file.path);
+
+            body.pathImage = imageResult.secure_url;
+            body.cloudinaryId = imageResult.public_id;
+            await fs.unlink(file.path);
+        }
+
+        const imgUpdated = await ImageModel.findByIdAndUpdate(id, body, { new: true });
+
+        res.status(200).json(imgUpdated);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export { saveImage, allImages, removeImage, modifyImage };

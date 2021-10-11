@@ -13,6 +13,7 @@ import modelTypeRouter from './controllers/model-type';
 import logChangeRouter from './controllers/log-change';
 import answerRouter from './controllers/answer';
 import imageRouter from './controllers/image-model';
+import reset from './controllers/reset';
 
 // Application
 const app = express();
@@ -45,6 +46,13 @@ app.use('/api/answers', answerRouter);
 
 // Images Details
 app.use('/api/images', imageRouter);
+
+// Reset test database
+console.log(process.env.NODE_ENV);
+
+if (process.env.NODE_ENV === 'test') {
+    app.use('/api/reset', reset);
+}
 
 // Image
 app.use('/api/uploads', express.static(path.resolve('uploads')));

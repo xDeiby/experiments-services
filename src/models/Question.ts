@@ -24,7 +24,7 @@ export interface IQuestion extends Document {
     section: string;
     alternatives: IAlternative[];
     experiment: string;
-    timeResp?: Date;
+    timeResp?: number;
     points?: number;
     explanation?: string;
 }
@@ -43,7 +43,7 @@ const questionSchema = new Schema({
         type: Boolean,
         required: true,
     },
-    timeResp: Date,
+    timeResp: Number,
     points: Number,
     explanation: String,
     alternatives: [

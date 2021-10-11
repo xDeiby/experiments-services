@@ -10,6 +10,7 @@ export interface IExperiment extends Document {
     title: string;
     creationDate: Date;
     modelType: string;
+    terms: string;
 }
 
 // Architecture of Experiment
@@ -22,6 +23,7 @@ const experimentSchema = new Schema({
         type: String,
         required: true,
     },
+    terms: String,
     creationDate: Date,
     modelType: {
         type: Schema.Types.ObjectId,

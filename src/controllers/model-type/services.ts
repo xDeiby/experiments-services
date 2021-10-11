@@ -7,6 +7,10 @@ async function createModelType(req: Request, res: Response, next: NextFunction):
     const { body } = req;
 
     try {
+        body.name = body.name.trim();
+        if (!body.abbreviation) {
+            body.abbreviation = body.name.trim().split(' ').join('_').toLowerCase();
+        }
         const newModel = new ModelType(body);
         const result = await newModel.save();
 
