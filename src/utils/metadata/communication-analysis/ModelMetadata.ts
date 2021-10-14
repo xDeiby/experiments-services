@@ -124,7 +124,7 @@ export default class ModelMetadata {
             ...model.specialisedCommunicativeEvents,
         ].flat();
 
-        const line = { x0: 1000, x1: -1000 };
+        const line = { x0: Number.MAX_VALUE, x1: Number.MIN_VALUE };
 
         allNodes.forEach((node) => {
             const { x } = node;
@@ -135,7 +135,7 @@ export default class ModelMetadata {
             }
         });
 
-        return line.x1 - line.x0;
+        return Math.abs(line.x1 - line.x0);
     }
 
     // Altura del modelo
@@ -146,13 +146,14 @@ export default class ModelMetadata {
             ...model.specialisedCommunicativeEvents,
         ].flat();
 
-        const line = { y0: 1000, y1: -1000 };
+        const line = { y0: Number.MAX_VALUE, y1: Number.MIN_VALUE };
 
         allNodes.forEach((node) => {
             const { y } = node;
             if (y <= line.y0) {
                 line.y0 = y;
-            } else if (y >= line.y1) {
+            }
+            if (y >= line.y1) {
                 line.y1 = y;
             }
         });
