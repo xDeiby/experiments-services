@@ -65,9 +65,6 @@ const questionSchema = new Schema({
     },
 });
 
-// package to validate unique fields in mongo (In this case, 'title')
-questionSchema.plugin(uniqueValidator);
-
 // Question model to mongo
 const Question = model<IQuestion>('Question', questionSchema);
 

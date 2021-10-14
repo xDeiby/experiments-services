@@ -48,8 +48,6 @@ app.use('/api/answers', answerRouter);
 app.use('/api/images', imageRouter);
 
 // Reset test database
-console.log(process.env.NODE_ENV);
-
 if (process.env.NODE_ENV === 'test') {
     app.use('/api/reset', reset);
 }

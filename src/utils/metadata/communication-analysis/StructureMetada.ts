@@ -1,27 +1,30 @@
-// ########## Sub Models ##########
-
-// Common Model
-export interface CommonModelCis {
+export interface Header {
+    userName: string;
+    identifier: string;
+    type: string;
+}
+export interface Point {
+    x: number;
+    y: number;
+}
+export interface PrecedenceRelation {
+    unique: string;
+    type: string;
+    source: string;
+    target: string;
+    points?: Point[];
+}
+export interface SupportActor {
     unique: string;
     identifier: string;
     name: string;
     type: string;
 }
-
-// Point of systeme reference
-export interface Point {
-    x: string;
-    y: string;
-}
-
-// Actor Model
-export type ActorModel = CommonModelCis & Point;
-
-// Support Actor in Communicative Event
-export type SupportActorModel = CommonModelCis;
-
-// Communicative Event
-export interface CommunicativeEventModel extends CommonModelCis, Point {
+export interface CommunicativeEvent {
+    unique: string;
+    identifier: string;
+    name: string;
+    type: string;
     goals: string;
     description: string;
     channel: string;
@@ -32,49 +35,47 @@ export interface CommunicativeEventModel extends CommonModelCis, Point {
     treatment: string;
     linkedCommunication: string;
     linkedReaction: string;
-    supportActor: SupportActorModel[];
+    x: number;
+    y: number;
+    supportActor: SupportActor[];
 }
 
-// Internal Communicative Event in Specialised Event
-export type InternalCommunicativeEventModel = Omit<CommunicativeEventModel, 'supportActor' | 'x' | 'y'>;
+export type InternalCommunicationEvent = Omit<CommunicativeEvent, 'x' | 'y' | 'supportActor'>;
 
-// Specialised Communicative Event
-export interface SpecialisedCommunicativeEvent extends CommunicativeEventModel {
-    internalCommunicativeEvent: InternalCommunicativeEventModel[];
+export interface SpecialisedCommunicativeEvents extends CommunicativeEvent {
+    internalCommunicativeEvent: InternalCommunicationEvent[];
 }
 
-// ########## Interactions ##########
-
-// Message Structure
-export interface MessageStructureModel {
+export interface Actor {
+    unique: string;
+    identifier: string;
     name: string;
     type: string;
-    // ? Qué tipo es children (No se utiliza)
+    x: number;
+    y: number;
+}
+export interface MessageStructure {
+    name: string;
+    type: string;
     children: any[];
 }
-
-// Precedence Relations
-export interface PrecedenceRelationsModel {
+export interface CommunicativeInteraction {
     unique: string;
+    identifier: string;
+    name: string;
     type: string;
+    messageStructure: MessageStructure;
     source: string;
     target: string;
     points?: Point[];
 }
-
-// Communicative Interactions
-export interface CommunicativeInteractionsModel extends SupportActorModel {
-    messageStructure: MessageStructureModel;
-    source: string;
-    target: string;
-    points: Point[];
-}
-
-// ########## Model Complete ##########
 export interface CommunicationModel {
-    actors: ActorModel[];
-    communicativeEvents: CommunicativeEventModel[];
-    specialisedCommunicativeEvents: SpecialisedCommunicativeEvent[];
-    communicativeInteractions: CommunicativeInteractionsModel[];
-    precedenceRelations: PrecedenceRelationsModel[];
+    header: Header[];
+    actors: Actor[];
+    starts: Actor[];
+    ends: Actor[];
+    communicativeEvents: CommunicativeEvent[];
+    specialisedCommunicativeEvents: SpecialisedCommunicativeEvents[];
+    communicativeInteractions: CommunicativeInteraction[];
+    precedenceRelations: PrecedenceRelation[];
 }

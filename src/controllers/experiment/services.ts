@@ -16,7 +16,7 @@ function createExperiment(req: Request, res: Response, next: NextFunction): void
             result
                 .populate('modelType')
                 .execPopulate()
-                .then((expe) => res.status(200).json(expe))
+                .then((expe) => res.status(201).json(expe))
         )
         .catch((err) => next(err));
 }
