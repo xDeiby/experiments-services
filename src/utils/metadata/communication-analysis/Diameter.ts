@@ -4,7 +4,7 @@ import { CommunicationModel } from './StructureMetada';
 
 export interface INodeWay {
     unique: string;
-    visited: string;
+    visited: boolean;
     children: string[];
     way: string[];
 }
@@ -19,7 +19,7 @@ export default class Diameter {
         this._model = model;
         this._nodes = this._idNodes().map((id) => ({
             unique: id,
-            visited: '',
+            visited: false,
             children: this._nodeChildren(id),
             way: [],
         }));
@@ -66,40 +66,40 @@ export default class Diameter {
 
     // Todos los nodos hijos de un nodo
     private _nodeChildren(nodeId: string): string[] {
-        return this.model.precedenceRelations
-            .filter((relation) => relation.source === nodeId)
+        const childrens = this.model.precedenceRelations
+            .filter(
+                (relation) =>
+                    relation.source === nodeId &&
+                    ![...(this.model.ends ? this.model.ends : [])].map((end) => end.unique).includes(relation.target)
+            )
             .map((relation) => relation.target);
+        return childrens;
     }
 
-    // Camino de un nodo
-    private _nodeWay(node: INodeWay, initial: INodeWay): string[] {
+    // Camino de un nodothis.model.ends
+    private _nodeWay(node: INodeWay): string[] {
         const childrenInfo = node.children.map((ch) => this.nodes.find((n) => n.unique === ch) as INodeWay);
-
-        // Nodo visitado
-        if (node.visited === initial.unique) {
-            return node.way;
-        }
-        // Se setea el camino que tuvo en un anterior trayecto
+        node.visited = true;
         node.way = [];
-        node.visited = initial.unique;
-
-        // Nodos no visitados
 
         // Nodo rodeado de nodos visitados
-        if (childrenInfo.filter((ch) => ch.visited !== initial.unique).length === 0) {
+        if (childrenInfo.filter((ch) => ch.visited === false).length === 0) {
+            node.visited = false;
             return [node.unique];
-
-            // Nodo con mas de 1 camino viable
         }
-        const childWays = node.children
-            .filter((ch) => ch !== initial.unique)
-            .map((child) => {
-                const childData = this.nodes.find((n) => n.unique === child) as INodeWay;
-                return this._nodeWay(childData, initial);
+        // Nodo con mas 1 o mas caminos viables
+        childrenInfo
+            .filter((ch) => ch.visited === false)
+            .forEach((child) => {
+                child.way = this._nodeWay(child);
+                child.visited = false;
             });
 
-        node.way = childWays.reduce<string[]>(
-            (bestWay, childWay) => (childWay.length >= bestWay.length ? childWay : bestWay),
+        node.visited = false;
+
+        // Hijo con el mejor camino
+        node.way = childrenInfo.reduce<string[]>(
+            (bestWay, child) => (child.way.length >= bestWay.length ? child.way : bestWay),
             node.way
         );
         return [node.unique, ...node.way];
@@ -111,28 +111,12 @@ export default class Diameter {
         // Se recorren todos los nodos del sistema
         this.nodes.forEach((node) => {
             // Se recorren todos los hjos del nodo
-            node.children.forEach((child) => {
-                // Info del nodo hijo
-                const childData = this.nodes.find((n) => n.unique === child) as INodeWay;
-
-                // Se setea el camino anterior
-                node.way = [];
-
-                // Por cada hijo genera el mejor camino
-                ways.push(this._nodeWay(childData, node));
-            });
-
-            // Se comparan los caminos de los hijos, con el mejor camino existente hasta el momento
-            node.way = ways.reduce<string[]>(
-                (bestWay, childWay) => (childWay.length >= bestWay.length ? childWay : bestWay),
-                node.way
-            );
+            ways.push(this._nodeWay(node));
         });
 
-        // Ya teniendo todos los caminos, simplemente se hace la selección del trayecto mas largo
-        return this.nodes.reduce<INodeWay>(
-            (best, node) => (node.way.length >= best.way.length ? node : best),
-            this.nodes[0]
-        ).way.length;
+        console.log(ways);
+
+        // Ya teniendo todos los caminos, simplemente se hace la selección del trayecto mas largo (Si mas de 1 camino, es el mas largo, se escoge el ultimo)
+        return ways.reduce<string[]>((best, way) => (way.length >= best.length ? way : best), ways[0]).length;
     }
 }

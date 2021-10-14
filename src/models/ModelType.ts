@@ -18,7 +18,7 @@ const modelTypeSchema = new Schema({
     abbreviation: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
     },
 });
 

@@ -8,6 +8,7 @@ import Section, { ETypeSection } from './Section';
 export interface IExperiment extends Document {
     id: string;
     title: string;
+    description: string;
     creationDate: Date;
     modelType: string;
     terms: string;

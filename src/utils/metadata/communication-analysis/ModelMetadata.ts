@@ -6,7 +6,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-underscore-dangle */
 import Diameter from './Diameter';
-import { CommunicationModel, PrecedenceRelationsModel } from './StructureMetada';
+import { CommunicationModel, PrecedenceRelation } from './StructureMetada';
 
 // Tipo de Relación
 type TypeRel = 'INPUT' | 'OUTPUT';
@@ -41,7 +41,7 @@ export default class ModelMetadata {
 
     // Todas las relaciones de un modelo
     private _getAllRelationsModel(model: CommunicationModel) {
-        return [...model.communicativeInteractions, model.precedenceRelations] as unknown as PrecedenceRelationsModel[];
+        return [...model.communicativeInteractions, model.precedenceRelations] as unknown as PrecedenceRelation[];
     }
 
     // All los nodos de un modelo
@@ -127,7 +127,7 @@ export default class ModelMetadata {
         const line = { x0: 1000, x1: -1000 };
 
         allNodes.forEach((node) => {
-            const x = parseInt(node.x);
+            const { x } = node;
             if (x <= line.x0) {
                 line.x0 = x;
             } else if (x >= line.x1) {
@@ -149,7 +149,7 @@ export default class ModelMetadata {
         const line = { y0: 1000, y1: -1000 };
 
         allNodes.forEach((node) => {
-            const y = parseInt(node.y);
+            const { y } = node;
             if (y <= line.y0) {
                 line.y0 = y;
             } else if (y >= line.y1) {
