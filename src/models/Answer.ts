@@ -12,6 +12,16 @@ export interface IAnswer extends Document {
     creationDate: Date;
 }
 
+export interface IAnswerObj {
+    id: string;
+    experiment: string;
+    quizzes: string;
+    surveys: string;
+    userName: string;
+    userEmail: string;
+    creationDate: Date | string;
+}
+
 // Architecture of Answer
 const answerSchema = new Schema({
     userEmail: String,

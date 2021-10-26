@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-underscore-dangle */
-import { IAnswer } from '../../../models/Answer';
+import { IAnswer, IAnswerObj } from '../../../models/Answer';
 import isJson from '../../isJson';
 import ModelMetadata from '../communication-analysis/ModelMetadata';
 import { CommunicationModel } from '../communication-analysis/StructureMetada';
@@ -13,19 +13,27 @@ interface IMetaField {
 }
 
 export default class ExperimentMetadata {
-    private _experiments: IAnswer[];
+    private _experiments: IAnswer[] | IAnswerObj[];
 
-    public get experiments(): IAnswer[] {
+    public get experiments(): IAnswer[] | IAnswerObj[] {
         return this._experiments;
     }
 
     // Getters and Setters
-    public set experiments(value: IAnswer[]) {
+    public set experiments(value: IAnswer[] | IAnswerObj[]) {
         this._experiments = value;
     }
 
-    public constructor(experiments: IAnswer[]) {
+    public constructor(experiments: IAnswer[] | IAnswerObj[]) {
         this._experiments = experiments;
+    }
+
+    public getSurveys(): IFormElements[][] {
+        return this.experiments.map((experiment) => JSON.parse(experiment.surveys) as IFormElements[]);
+    }
+
+    public getQuizzes(): IFormElements[][] {
+        return this.experiments.map((experiment) => JSON.parse(experiment.quizzes) as IFormElements[]);
     }
 
     private _points(quiz: IFormElements, all = false): number {
@@ -52,7 +60,7 @@ export default class ExperimentMetadata {
                     (result, question, currentIndex: number) => [
                         ...result,
                         {
-                            field: question.alternatives.find((alt) => alt.isCorrect && alt.selected) ? 1 : 0,
+                            field: question.alternatives.filter((alt) => alt.selected).length,
                             header: `surv${index + 1}Question${currentIndex + 1}`,
                         },
                     ],

@@ -1,0 +1,202 @@
+[{
+    "header": [
+        {
+            "userName": "default user",
+            "identifier": "1634345726207",
+            "type": "COMMUNICATIONANALYSIS"
+        }
+    ],
+    "actors": [
+        {
+            "unique": "3",
+            "identifier": "Actor 1",
+            "name": "New Actor 1",
+            "type": "Actor",
+            "x": 610,
+            "y": 40
+        }
+    ],
+    "starts": [
+        {
+            "unique": "2",
+            "identifier": "Start1",
+            "name": "Start ",
+            "type": "Start",
+            "x": 70,
+            "y": 220
+        }
+    ],
+    "ends": [
+        {
+            "unique": "16",
+            "identifier": "End1",
+            "name": "End ",
+            "type": "End",
+            "x": 1050,
+            "y": 530
+        }
+    ],
+    "communicativeEvents": [
+        {
+            "unique": "4",
+            "identifier": "CE 1",
+            "name": "New CE 1",
+            "type": "Communicative Event",
+            "goals": "",
+            "description": "",
+            "channel": "",
+            "temporalRestrictions": "",
+            "frequency": "",
+            "contextConstraints": "",
+            "structuralConstraints": "",
+            "treatment": "",
+            "linkedCommunication": "",
+            "linkedReaction": "",
+            "x": 710,
+            "y": 230,
+            "supportActor": [
+                {
+                    "unique": "5",
+                    "identifier": "Actor",
+                    "name": "New Actor",
+                    "type": "Support Actor"
+                }
+            ]
+        },
+        {
+            "unique": "6",
+            "identifier": "CE 2",
+            "name": "New CE 2",
+            "type": "Communicative Event",
+            "goals": "",
+            "description": "",
+            "channel": "",
+            "temporalRestrictions": "",
+            "frequency": "",
+            "contextConstraints": "",
+            "structuralConstraints": "",
+            "treatment": "",
+            "linkedCommunication": "",
+            "linkedReaction": "",
+            "x": 310,
+            "y": 480,
+            "supportActor": [
+                {
+                    "unique": "7",
+                    "identifier": "Actor",
+                    "name": "New Actor",
+                    "type": "Support Actor"
+                }
+            ]
+        }
+    ],
+    "specialisedCommunicativeEvents": [
+        {
+            "unique": "8",
+            "identifier": "SCE 1",
+            "name": "New SCE 1",
+            "type": "Specialised Communicative Event",
+            "goals": "",
+            "description": "",
+            "channel": "",
+            "temporalRestrictions": "",
+            "frequency": "",
+            "contextConstraints": "",
+            "structuralConstraints": "",
+            "treatment": "",
+            "linkedCommunication": "",
+            "linkedReaction": "",
+            "x": 620,
+            "y": 460,
+            "internalCommunicativeEvent": [
+                {
+                    "unique": "9",
+                    "identifier": "CE",
+                    "name": "New CE",
+                    "type": "Internal Communicative Event",
+                    "goals": "",
+                    "description": "",
+                    "channel": "",
+                    "temporalRestrictions": "",
+                    "frequency": "",
+                    "contextConstraints": "",
+                    "structuralConstraints": "",
+                    "treatment": "",
+                    "linkedCommunication": "",
+                    "linkedReaction": ""
+                },
+                {
+                    "unique": "10",
+                    "identifier": "CE",
+                    "name": "New CE",
+                    "type": "Internal Communicative Event",
+                    "goals": "",
+                    "description": "",
+                    "channel": "",
+                    "temporalRestrictions": "",
+                    "frequency": "",
+                    "contextConstraints": "",
+                    "structuralConstraints": "",
+                    "treatment": "",
+                    "linkedCommunication": "",
+                    "linkedReaction": ""
+                }
+            ],
+            "supportActor": [
+                {
+                    "unique": "11",
+                    "identifier": "Actor",
+                    "name": "New Actor",
+                    "type": "Support Actor"
+                }
+            ]
+        }
+    ],
+    "communicativeInteractions": [
+        {
+            "unique": "14",
+            "identifier": "CI",
+            "name": "New CI",
+            "type": "Communicative Interaction",
+            "messageStructure": {
+                "name": "New Structure",
+                "type": "Structure",
+                "children": []
+            },
+            "source": "3",
+            "target": "4"
+        }
+    ],
+    "precedenceRelations": [
+        {
+            "unique": "12",
+            "type": "Precedence Relation",
+            "source": "10",
+            "target": "4",
+            "points": [
+                {
+                    "x": 970,
+                    "y": 293
+                }
+            ]
+        },
+        {
+            "unique": "13",
+            "type": "Precedence Relation",
+            "source": "9",
+            "target": "6"
+        },
+        {
+            "unique": "15",
+            "type": "Precedence Relation",
+            "source": "2",
+            "target": "6"
+        },
+        {
+            "unique": "17",
+            "type": "Precedence Relation",
+            "source": "8",
+            "target": "16"
+        }
+    ]
+}]

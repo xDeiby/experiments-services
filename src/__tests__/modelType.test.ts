@@ -27,7 +27,7 @@ beforeAll(async () => {
     await Question.deleteMany({});
 });
 
-describe('Test de servicios de la aplicación', () => {
+describe('Tests de integración', () => {
     let modelCreated: IModelType;
     let experimentCreated: IExperiment;
     let surveyCreated: ISection;
@@ -55,6 +55,13 @@ describe('Test de servicios de la aplicación', () => {
 
         //     expect(result.body).toHaveLength(initialModels.length - 1);
         // });
+        it('Se crea un nuevo modelo, con el mismo nombre', async () => {
+            await api
+                .post('/api/model_types')
+                .send(modelTest)
+                .expect(500)
+                .expect('Content-Type', /application\/json/);
+        });
 
         it('Se modifica un modelo', async () => {
             const newName = 'Modelo modificado';
@@ -68,6 +75,22 @@ describe('Test de servicios de la aplicación', () => {
             modelCreated = modify.body as IModelType;
 
             expect(modelCreated.name).toEqual(newName);
+        });
+
+        it('Se verifica la obtención', async () => {
+            const models = await api
+                .get('/api/model_types')
+                .expect(200)
+                .expect('Content-Type', /application\/json/);
+
+            expect(models.body).toContainEqual(modelCreated);
+
+            const model = await api
+                .get(`/api/model_types/${modelCreated.id}`)
+                .expect(200)
+                .expect('Content-Type', /application\/json/);
+
+            expect(model.body).toEqual(modelCreated);
         });
     });
 
@@ -98,6 +121,23 @@ describe('Test de servicios de la aplicación', () => {
             experimentCreated = response.body as IExperiment;
 
             expect(experimentCreated.title).toEqual(newTitle);
+        });
+
+        it('Se comprueba la obtención de los experimentos', async () => {
+            const experiments = await api
+                .get('/api/experiments')
+                .expect(200)
+                .expect('Content-Type', /application\/json/);
+
+            const experiment = await api
+                .get(`/api/experiments/${experimentCreated.id}`)
+                .expect(200)
+                .expect('Content-Type', /application\/json/);
+
+            expect(
+                experiments.body.map((exp: IExperiment) => ({ ...exp, modelType: (exp.modelType as IModelType).id }))
+            ).toContainEqual(experimentCreated);
+            expect(experiment.body.id).toEqual(experimentCreated.id);
         });
 
         it('Se comprueba la creación de un Quiz y un Survey por defecto en el experimento', async () => {

@@ -29,6 +29,14 @@ export default class ModelMetadata {
         this._models = value;
     }
 
+    private _excludeNodes(model: CommunicationModel, relation: PrecedenceRelation): boolean {
+        if (model.starts && model.ends) {
+            const nodes = [...model.starts.map((s) => s.unique), ...model.ends.map((e) => e.unique)];
+            return !nodes.includes(relation.source) && !nodes.includes(relation.target);
+        }
+        return true;
+    }
+
     // Determina que tipo de Relación es: Entrada, Salida o Normal
     private _findTypeRel(source: string, quizId: number): TypeRel {
         const isActor = (id: string) => this.models[quizId].actors.find((actor) => actor.unique === id);
@@ -88,7 +96,10 @@ export default class ModelMetadata {
 
     // Número de arcos de un modelo
     private _numArcModel(model: CommunicationModel): number {
-        return model.communicativeInteractions.length + model.precedenceRelations.length;
+        return (
+            model.communicativeInteractions.length +
+            model.precedenceRelations.filter((rel) => this._excludeNodes(model, rel)).length
+        );
     }
 
     // Número de relaciones de un nodo
@@ -176,11 +187,13 @@ export default class ModelMetadata {
 
     // Número de relaciones entre eventos en total.
     public countEventRels() {
-        return this.models.map((model, index) => ({
-            idQuiz: index,
-            value: model.precedenceRelations.length,
-            header: `Numeventrels${index + 1}`,
-        }));
+        return this.models.map((model, index) => {
+            return {
+                idQuiz: index,
+                value: model.precedenceRelations.filter((rel) => this._excludeNodes(model, rel)).length,
+                header: `Numeventrels${index + 1}`,
+            };
+        });
     }
 
     // Número de relaciones de entrada o salida (No soportado por el modelo, no se distingen en el JSON)
