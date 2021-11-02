@@ -1,7 +1,7 @@
-import { IAnswerObj } from 'src/models/Answer';
-import ModelMetadata from 'src/utils/metadata/communication-analysis/ModelMetadata';
-import { CommunicationModel } from 'src/utils/metadata/communication-analysis/StructureMetada';
-import ExperimentMetadata from 'src/utils/metadata/experiment/ExperimentMetadata2';
+import { IAnswerObj } from '../models/Answer';
+import ModelMetadata from '../utils/metadata/communication-analysis/ModelMetadata';
+import { CommunicationModel } from '../utils/metadata/communication-analysis/StructureMetada';
+import ExperimentMetadata from '../utils/metadata/experiment/ExperimentMetadata2';
 import communicationModelTest from '../utils/test/communicationModelTest.json';
 import communicationResults from '../utils/test/communicationResults.json';
 import answesTest from '../utils/test/answer-test/experimentTest.json';

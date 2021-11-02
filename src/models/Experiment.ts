@@ -2,7 +2,6 @@
 import { Document, Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import { defaultSection } from '../utils/defaultEntitys';
-import { IModelType } from './ModelType';
 import Section, { ETypeSection } from './Section';
 
 // Structure of Experiment
@@ -11,7 +10,7 @@ export interface IExperiment extends Document {
     title: string;
     description: string;
     creationDate: Date;
-    modelType: string | IModelType;
+    modelType: string;
     terms: string;
 }
 

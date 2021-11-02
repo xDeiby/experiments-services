@@ -117,7 +117,12 @@ export default class ExperimentMetadata {
             surveys = JSON.parse(exp.surveys) as IFormElements[];
             quizzes = JSON.parse(exp.quizzes) as IFormElements[];
 
-            metaExp = { id: exp.id, user: exp.userName, email: exp.userEmail, date: exp.creationDate };
+            metaExp = {
+                id: exp.id,
+                user: exp.userName,
+                email: exp.userEmail,
+                date: exp.creationDate,
+            };
 
             // Numero de alternativas seleccionadas en cada pregunta
             this.numAnswerSurveyQuestions(surveys).forEach(({ header, field }) => {
@@ -245,6 +250,16 @@ export default class ExperimentMetadata {
             // Alto del layout
             metadataModel.heights().forEach((diam) => {
                 metaExp[diam.header] = diam.value;
+            });
+
+            // Ancho promedio de etiquetas
+            metadataModel.averageLabelLength().forEach((data) => {
+                metaExp[data.header] = data.value;
+            });
+
+            // Máximo largo de etiquetas
+            metadataModel.maxLengthLabel().forEach((data) => {
+                metaExp[data.header] = data.value;
             });
 
             metadataExperiments.push(metaExp);

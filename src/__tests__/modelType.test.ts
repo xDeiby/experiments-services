@@ -4,9 +4,9 @@ import supertest from 'supertest';
 import mongoose from 'mongoose';
 import app from '../app';
 import ModelType, { IModelType } from '../models/ModelType';
-import Experiment, { IExperiment } from 'src/models/Experiment';
-import Section, { ISection } from 'src/models/Section';
-import Question, { IQuestion } from 'src/models/Question';
+import Experiment, { IExperiment } from '../models/Experiment';
+import Section, { ISection } from '../models/Section';
+import Question, { IQuestion } from '../models/Question';
 import {
     experimentTest,
     modelTest,
@@ -16,7 +16,7 @@ import {
     quizTest,
     sectionsInDb,
     surveyTest,
-} from 'src/utils/test/test_helper';
+} from '../utils/test/test_helper';
 
 const api = supertest(app);
 

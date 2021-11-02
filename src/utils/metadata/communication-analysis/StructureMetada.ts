@@ -57,6 +57,7 @@ export interface Actor {
 export interface MessageStructure {
     name: string;
     type: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: any[];
 }
 export interface CommunicativeInteraction {
