@@ -135,7 +135,7 @@ describe('Tests de integración', () => {
                 .expect('Content-Type', /application\/json/);
 
             expect(
-                experiments.body.map((exp: IExperiment) => ({ ...exp, modelType: (exp.modelType as IModelType).id }))
+                experiments.body.map((exp: IExperiment) => ({ ...exp, modelType: (exp.modelType as any).id }))
             ).toContainEqual(experimentCreated);
             expect(experiment.body.id).toEqual(experimentCreated.id);
         });
