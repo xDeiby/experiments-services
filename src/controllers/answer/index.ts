@@ -4,7 +4,7 @@
 
 import { Router, Request, Response, NextFunction } from 'express';
 import Answer, { IAnswer } from '../../models/Answer';
-import Experiment from '../../models/Experiment';
+import Experiment, { IExperiment } from '../../models/Experiment';
 import ModelType from '../../models/ModelType';
 import Question from '../../models/Question';
 import Section, { ETypeSection } from '../../models/Section';
@@ -40,9 +40,14 @@ answerRouter.put('/:id', async (req: Request, res: Response) => {
 // Get All or Paginate
 answerRouter.get(
     '/',
-    async (req: Request<any, any, any, { page: string; limit: string }>, res: Response, next: NextFunction) => {
+    async (
+        req: Request<any, any, any, { page: string; limit: string; model: string }>,
+        res: Response,
+        next: NextFunction
+    ) => {
         const page = parseInt(req.query.page);
         const limit = parseInt(req.query.limit);
+        const { model } = req.query;
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
 
@@ -63,7 +68,15 @@ answerRouter.get(
             };
         }
         try {
-            result.data = await Answer.find().limit(limit).skip(startIndex);
+            // if (model) {
+            // }
+
+            let answers = await Answer.find().limit(limit).skip(startIndex).populate('experiment');
+
+            if (model) {
+                answers = answers.filter((ans) => ((ans.experiment as IExperiment).modelType as any).equals(model));
+            }
+            result.data = answers;
             result.total = total;
 
             const metadataExperiments = new ExperimentMetadata(result.data as IAnswer[]);
@@ -84,6 +97,7 @@ answerRouter.post('/', (req: Request, res: Response, next: NextFunction) => {
         .save()
         .then((result) =>
             res.status(201).json({
+                id: result.id,
                 creationDate: result.creationDate,
                 experiment: result.experiment,
                 userName: result.userName,

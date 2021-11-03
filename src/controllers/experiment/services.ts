@@ -73,6 +73,7 @@ function modifyById(req: Request, res: Response, next: NextFunction): void {
     const { body } = req;
 
     Experiment.findByIdAndUpdate(id, body, { new: true })
+        .populate('modelType')
         .then((result) => (result ? res.status(200).json(result) : res.status(404).end()))
         .catch((error) => next(error));
 }

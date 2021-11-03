@@ -76,7 +76,7 @@ export default class Diameter {
         return childrens;
     }
 
-    // Camino de un nodothis.model.ends
+    // Camino de un nodo
     private _nodeWay(node: INodeWay): string[] {
         const childrenInfo = node.children.map((ch) => this.nodes.find((n) => n.unique === ch) as INodeWay);
         node.visited = true;
@@ -106,15 +106,13 @@ export default class Diameter {
     }
 
     // Inicio de busqueda
-    public longestWay() {
+    public longestWay(): number {
         const ways: string[][] = [];
         // Se recorren todos los nodos del sistema
         this.nodes.forEach((node) => {
             // Se recorren todos los hjos del nodo
             ways.push(this._nodeWay(node));
         });
-
-        console.log(ways);
 
         // Ya teniendo todos los caminos, simplemente se hace la selección del trayecto mas largo (Si mas de 1 camino, es el mas largo, se escoge el ultimo)
         return ways.reduce<string[]>((best, way) => (way.length >= best.length ? way : best), ways[0]).length;

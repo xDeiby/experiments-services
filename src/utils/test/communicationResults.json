@@ -1,0 +1,16 @@
+[
+    {
+        "actors": 1,
+        "rels": 3,
+        "allNodes": 5,
+        "eventRels": 2,
+        "complexNodes": 1,
+        "simpleNodes": 2,
+        "inputRels": 1,
+        "outputRels": 0,
+        "maxRelsInput": 1,
+        "maxRelsOutput": 2,
+        "maxRels": 1,
+        "diameter": 2
+    }
+]

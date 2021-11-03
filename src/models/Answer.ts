@@ -1,15 +1,25 @@
 /* eslint-disable no-unused-vars */
 import { Document, Schema, model } from 'mongoose';
+import { IExperiment } from './Experiment';
 
 // Struture of Answer
 export interface IAnswer extends Document {
+    id: string;
+    experiment: string | IExperiment;
+    quizzes: string;
+    surveys: string;
+    userName: string;
+    userEmail: string;
+    creationDate: Date;
+}
+export interface IAnswerObj {
     id: string;
     experiment: string;
     quizzes: string;
     surveys: string;
     userName: string;
     userEmail: string;
-    creationDate: Date;
+    creationDate: Date | string;
 }
 
 // Architecture of Answer

@@ -1,7 +1,7 @@
-import Experiment, { IExperiment } from 'src/models/Experiment';
-import ModelType, { IModelType } from 'src/models/ModelType';
-import Question, { ETypeQuestion, IQuestion } from 'src/models/Question';
-import Section, { ETypeSection, ISection } from 'src/models/Section';
+import Experiment, { IExperiment } from '../../models/Experiment';
+import ModelType, { IModelType } from '../../models/ModelType';
+import Question, { ETypeQuestion, IQuestion } from '../../models/Question';
+import Section, { ETypeSection, ISection } from '../../models/Section';
 
 // Default Model
 export const modelTest = {

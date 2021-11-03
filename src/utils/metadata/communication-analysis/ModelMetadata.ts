@@ -29,6 +29,14 @@ export default class ModelMetadata {
         this._models = value;
     }
 
+    private _excludeNodes(model: CommunicationModel, relation: PrecedenceRelation): boolean {
+        if (model.starts && model.ends) {
+            const nodes = [...model.starts.map((s) => s.unique), ...model.ends.map((e) => e.unique)];
+            return !nodes.includes(relation.source) && !nodes.includes(relation.target);
+        }
+        return true;
+    }
+
     // Determina que tipo de Relación es: Entrada, Salida o Normal
     private _findTypeRel(source: string, quizId: number): TypeRel {
         const isActor = (id: string) => this.models[quizId].actors.find((actor) => actor.unique === id);
@@ -66,6 +74,21 @@ export default class ModelMetadata {
         );
     }
 
+    // Suma de las longitudes de etiqueta, de cada nodo
+    private _sumLabelLength(model: CommunicationModel): number {
+        return (
+            model.actors.reduce<number>((sum, actor) => sum + actor.name.length, 0) +
+            model.communicativeEvents.reduce<number>((sum, event) => sum + event.name.length, 0) +
+            model.specialisedCommunicativeEvents.reduce<number>(
+                (sum, event) =>
+                    sum +
+                    event.name.length +
+                    event.internalCommunicativeEvent.reduce<number>((sum2, actor) => sum2 + actor.name.length, 0),
+                0
+            )
+        );
+    }
+
     // Nodo con mas relaciones de un modelo
     private bestNode(model: CommunicationModel, type: 'all' | 'input' | 'output') {
         const allNodes = this._getAllNodesIds(model);
@@ -88,7 +111,25 @@ export default class ModelMetadata {
 
     // Número de arcos de un modelo
     private _numArcModel(model: CommunicationModel): number {
-        return model.communicativeInteractions.length + model.precedenceRelations.length;
+        return (
+            model.communicativeInteractions.length +
+            model.precedenceRelations.filter((rel) => this._excludeNodes(model, rel)).length
+        );
+    }
+
+    // Maximo largo de caracteres de un nodo, por modelo
+    private _maxLabel(model: CommunicationModel) {
+        const allNodes = [
+            ...model.actors,
+            ...model.communicativeEvents,
+            ...model.specialisedCommunicativeEvents,
+            ...model.specialisedCommunicativeEvents.map((event) => event.internalCommunicativeEvent).flat(),
+        ].flat();
+
+        return allNodes.reduce<number>(
+            (bestLength, node) => (node.name.length > bestLength ? node.name.length : bestLength),
+            0
+        );
     }
 
     // Número de relaciones de un nodo
@@ -110,7 +151,6 @@ export default class ModelMetadata {
         }
     }
 
-    // TODO: Preguntar que sucede si el nodo es 1
     // Ecuación de densidad
     private _densityEquation(arcs: number, nodes: number): number {
         return arcs / (nodes * (nodes - 1));
@@ -177,11 +217,13 @@ export default class ModelMetadata {
 
     // Número de relaciones entre eventos en total.
     public countEventRels() {
-        return this.models.map((model, index) => ({
-            idQuiz: index,
-            value: model.precedenceRelations.length,
-            header: `Numeventrels${index + 1}`,
-        }));
+        return this.models.map((model, index) => {
+            return {
+                idQuiz: index,
+                value: model.precedenceRelations.filter((rel) => this._excludeNodes(model, rel)).length,
+                header: `Numeventrels${index + 1}`,
+            };
+        });
     }
 
     // Número de relaciones de entrada o salida (No soportado por el modelo, no se distingen en el JSON)
@@ -193,7 +235,7 @@ export default class ModelMetadata {
                     this._findTypeRel(relation.source, index) === type ? numInputs + 1 : numInputs,
                 0
             ),
-            header: `Num${type}rels${index}`,
+            header: `Num${type}rels${index + 1}`,
         }));
     }
 
@@ -224,6 +266,24 @@ export default class ModelMetadata {
         }));
     }
 
+    // Promedio de la logitud de las etiquetas, respecto al numero de nodos
+    public averageLabelLength() {
+        return this.models.map((model, index) => ({
+            idQuiz: index,
+            value: this._sumLabelLength(model) / this._numNodesModel(model),
+            header: `AverageLabelLength${index + 1}`,
+        }));
+    }
+
+    // Maximo largo de etiqueta
+    public maxLengthLabel() {
+        return this.models.map((model, index) => ({
+            idQuiz: index,
+            value: this._maxLabel(model),
+            header: `MaxLabelLength${index + 1}`,
+        }));
+    }
+
     // Número de nodos simples
     public countComplexNodes() {
         return this.models.map((model, index) => ({
@@ -238,7 +298,7 @@ export default class ModelMetadata {
         return this.models.map((model, index) => ({
             idQuiz: index,
             value: new Diameter(model).longestWay(),
-            header: `diameter${index + 1}`,
+            header: `Diameter${index + 1}`,
         }));
     }
 
@@ -346,6 +406,7 @@ export default class ModelMetadata {
         }));
     }
 
+    // Area del modelo
     public area() {
         return this.models.map((model, index) => ({
             idQuiz: index,
