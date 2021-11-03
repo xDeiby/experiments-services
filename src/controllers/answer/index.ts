@@ -97,6 +97,7 @@ answerRouter.post('/', (req: Request, res: Response, next: NextFunction) => {
         .save()
         .then((result) =>
             res.status(201).json({
+                id: result.id,
                 creationDate: result.creationDate,
                 experiment: result.experiment,
                 userName: result.userName,
