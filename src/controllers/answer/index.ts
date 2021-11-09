@@ -9,9 +9,9 @@ import ModelType from '../../models/ModelType';
 import Question from '../../models/Question';
 import Section, { ETypeSection } from '../../models/Section';
 import ImageModel from '../../models/ImageModel';
-import { CommunicationModel } from 'src/utils/metadata/communication-analysis/StructureMetada';
-import CommunicationoModelMetadata from 'src/utils/metadata/communication-analysis/CommunicationModelMetadata';
-import calculateMetadata from 'src/utils/metadata';
+import { CommunicationModel } from '../../utils/metadata/communication-analysis/StructureMetada';
+import CommunicationoModelMetadata from '../../utils/metadata/communication-analysis/CommunicationModelMetadata';
+import calculateMetadata from '../../utils/metadata';
 
 const answerRouter = Router();
 

@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-underscore-dangle */
-import { IAnswer, IAnswerObj } from 'src/models/Answer';
-import { IQuestion } from 'src/models/Question';
+import { IAnswer, IAnswerObj } from '../../../models/Answer';
+import { IQuestion } from '../../../models/Question';
 import { IFormElements } from './metadata.types';
 
 export enum QuizResponse {

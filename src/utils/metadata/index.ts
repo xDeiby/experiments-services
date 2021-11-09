@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IAnswer } from 'src/models/Answer';
+import { IAnswer } from '../../models/Answer';
 import CommunicationoModelMetadata from './communication-analysis/CommunicationModelMetadata';
 import { CommunicationModel } from './communication-analysis/StructureMetada';
 import ExperimentMetadata from './experiment/ExperimentMetadata';
