@@ -79,4 +79,6 @@ export interface CommunicationModel {
     specialisedCommunicativeEvents: SpecialisedCommunicativeEvents[];
     communicativeInteractions: CommunicativeInteraction[];
     precedenceRelations: PrecedenceRelation[];
+    // eslint-disable-next-line camelcase
+    additional_attributes?: any;
 }

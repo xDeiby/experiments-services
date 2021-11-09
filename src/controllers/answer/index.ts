@@ -9,7 +9,9 @@ import ModelType from '../../models/ModelType';
 import Question from '../../models/Question';
 import Section, { ETypeSection } from '../../models/Section';
 import ImageModel from '../../models/ImageModel';
-import ExperimentMetadata from '../../utils/metadata/experiment/ExperimentMetadata2';
+import { CommunicationModel } from 'src/utils/metadata/communication-analysis/StructureMetada';
+import CommunicationoModelMetadata from 'src/utils/metadata/communication-analysis/CommunicationModelMetadata';
+import calculateMetadata from 'src/utils/metadata';
 
 const answerRouter = Router();
 
@@ -68,9 +70,6 @@ answerRouter.get(
             };
         }
         try {
-            // if (model) {
-            // }
-
             let answers = await Answer.find().limit(limit).skip(startIndex).populate('experiment');
 
             if (model) {
@@ -79,8 +78,9 @@ answerRouter.get(
             result.data = answers;
             result.total = total;
 
-            const metadataExperiments = new ExperimentMetadata(result.data as IAnswer[]);
-            res.status(200).json(metadataExperiments.metadata());
+            const metadata = calculateMetadata(result.data as IAnswer[]);
+
+            res.status(200).json(metadata);
         } catch (e) {
             next(e);
         }
@@ -165,6 +165,19 @@ answerRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
     Answer.findById(id)
         .then((result) => (result ? res.status(200).json(result) : res.status(404).end()))
         .catch((error) => next(error));
+});
+
+answerRouter.post('/metadata', async (req: Request, res: Response, next: NextFunction) => {
+    const { body } = req;
+
+    try {
+        const model = body as CommunicationModel;
+        const metadata = new CommunicationoModelMetadata(model);
+
+        res.status(200).json(metadata.getAllMetadata());
+    } catch (error) {
+        next(error);
+    }
 });
 
 export default answerRouter;
