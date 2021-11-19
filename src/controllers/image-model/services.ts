@@ -1,34 +1,29 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { NextFunction, Request, Response } from 'express';
 import fs from 'fs-extra';
-import cloudinaryV2 from '../../libs/cloudinary';
+import path from 'path';
 import ImageModel from '../../models/ImageModel';
 
 // Save Image
-const saveImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+// Local version
+
+const saveImage = (req: Request, res: Response, next: NextFunction): void => {
     const { title, description, modelJson, quiz, experiment } = req.body;
     const { file } = req;
 
-    try {
-        const imageResult = await cloudinaryV2.uploader.upload(file!.path);
+    const newImage = new ImageModel({
+        title,
+        description,
+        modelJson,
+        quiz,
+        experiment,
+        pathImage: file?.path,
+    });
 
-        const newImage = new ImageModel({
-            title,
-            description,
-            modelJson,
-            quiz,
-            experiment,
-            pathImage: imageResult.secure_url,
-            cloudinaryId: imageResult.public_id,
-        });
-
-        const result = await newImage.save();
-        await fs.unlink(file!.path);
-
-        res.status(201).json(result);
-    } catch (error) {
-        next(error);
-    }
+    newImage
+        .save()
+        .then((result) => res.status(201).json(result))
+        .catch((error) => next(error));
 };
 
 // Get All Images
@@ -45,37 +40,37 @@ const allImages = (req: Request, res: Response, next: NextFunction): void => {
 };
 
 // Remove Image
-const removeImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { id } = req.params;
+// Local version
 
-    try {
-        const removedImg = await ImageModel.findByIdAndRemove(id);
-        if (removedImg) {
-            await cloudinaryV2.uploader.destroy(removedImg.cloudinaryId);
-            res.status(204).end();
-        } else {
-            res.status(404).end();
-        }
-    } catch (error) {
-        next(error);
-    }
+const removeImage = (req: Request, res: Response, next: NextFunction): void => {
+    const { id } = req.params;
+    ImageModel.findByIdAndRemove(id)
+        .then((result) => {
+            if (result) {
+                const route = path.resolve(result.pathImage);
+                console.log(route);
+                if(route){
+                    fs.unlink(route);
+                }
+                res.status(204).end();
+            } else {
+                res.status(404).end();
+            }
+        })
+        .catch((error) => next(error));
 };
+
 
 const modifyImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { id } = req.params;
     const { body, file } = req;
 
-    let imageResult;
     try {
         if (file) {
-            // TODO: Arreglar
             const removedImg = await ImageModel.findById(id);
-            await cloudinaryV2.uploader.destroy(removedImg!.cloudinaryId);
-            imageResult = await cloudinaryV2.uploader.upload(file.path);
+            if(fs.existsSync(removedImg?.pathImage as string)) await fs.unlink(removedImg?.pathImage as string);
 
-            body.pathImage = imageResult.secure_url;
-            body.cloudinaryId = imageResult.public_id;
-            await fs.unlink(file.path);
+            body.pathImage = file.path;
         }
 
         const imgUpdated = await ImageModel.findByIdAndUpdate(id, body, { new: true });
@@ -85,5 +80,6 @@ const modifyImage = async (req: Request, res: Response, next: NextFunction): Pro
         next(error);
     }
 };
+
 
 export { saveImage, allImages, removeImage, modifyImage };
