@@ -49,7 +49,7 @@ const removeImage = (req: Request, res: Response, next: NextFunction): void => {
             if (result) {
                 const route = path.resolve(result.pathImage);
                 console.log(route);
-                if(route){
+                if (route) {
                     fs.unlink(route);
                 }
                 res.status(204).end();
@@ -60,7 +60,6 @@ const removeImage = (req: Request, res: Response, next: NextFunction): void => {
         .catch((error) => next(error));
 };
 
-
 const modifyImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { id } = req.params;
     const { body, file } = req;
@@ -68,7 +67,7 @@ const modifyImage = async (req: Request, res: Response, next: NextFunction): Pro
     try {
         if (file) {
             const removedImg = await ImageModel.findById(id);
-            if(fs.existsSync(removedImg?.pathImage as string)) await fs.unlink(removedImg?.pathImage as string);
+            if (fs.existsSync(removedImg?.pathImage as string)) await fs.unlink(removedImg?.pathImage as string);
 
             body.pathImage = file.path;
         }
@@ -80,6 +79,5 @@ const modifyImage = async (req: Request, res: Response, next: NextFunction): Pro
         next(error);
     }
 };
-
 
 export { saveImage, allImages, removeImage, modifyImage };

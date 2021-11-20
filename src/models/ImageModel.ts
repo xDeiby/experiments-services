@@ -1,12 +1,13 @@
 import { Document, model, Schema } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
+import fs from 'fs-extra';
 
 // Interface model
 export interface IImageModel extends Document {
     title: string;
     description: string;
     pathImage: string;
-    cloudinaryId: string;
+    // cloudinaryId: string;
     modelJson: string;
     quiz: string;
     experiment: string;
@@ -27,11 +28,7 @@ const imageSchema = new Schema({
         required: true,
         unique: true,
     },
-    cloudinaryId: {
-        type: String,
-        required: true,
-        unique: true,
-    },
+
     modelJson: {
         type: String,
         required: true,
@@ -52,6 +49,20 @@ const imageSchema = new Schema({
 imageSchema.plugin(uniqueValidator);
 
 // Model image to mongodb
+imageSchema.pre('deleteOne', async function (next) {
+    try {
+        const sectionId = (this as any).getQuery().quiz;
+        const modelImage = await ImageModel.findOne({ quiz: sectionId });
+        if (modelImage) {
+            await fs.unlink(modelImage.pathImage);
+        }
+    } catch (err: any) {
+        next(err);
+    }
+
+    next();
+});
+
 const ImageModel = model<IImageModel>('ImageModel', imageSchema);
 
 export default ImageModel;

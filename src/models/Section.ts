@@ -51,6 +51,7 @@ sectionSchema.pre('deleteOne', async function (next) {
     // eslint-disable-next-line dot-notation
     const sectionId = (this as any).getQuery()['_id'];
     await model('Question').deleteMany({ section: sectionId });
+    await model('ImageModel').deleteOne({ quiz: sectionId });
     next();
 });
 
