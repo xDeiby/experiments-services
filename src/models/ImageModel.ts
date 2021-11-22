@@ -53,7 +53,7 @@ imageSchema.pre('deleteOne', async function (next) {
     try {
         const sectionId = (this as any).getQuery().quiz;
         const modelImage = await ImageModel.findOne({ quiz: sectionId });
-        if (modelImage) {
+        if (modelImage && fs.existsSync(modelImage.pathImage)) {
             await fs.unlink(modelImage.pathImage);
         }
     } catch (err: any) {

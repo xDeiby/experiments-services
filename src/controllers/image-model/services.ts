@@ -48,10 +48,9 @@ const removeImage = (req: Request, res: Response, next: NextFunction): void => {
         .then((result) => {
             if (result) {
                 const route = path.resolve(result.pathImage);
-                console.log(route);
-                if (route) {
-                    fs.unlink(route);
-                }
+                console.log(route, 'akiiiii');
+
+                fs.unlink(route);
                 res.status(204).end();
             } else {
                 res.status(404).end();
