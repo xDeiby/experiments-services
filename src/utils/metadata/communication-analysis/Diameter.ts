@@ -46,12 +46,7 @@ export default class Diameter {
     private _idNodes() {
         const ids = [
             ...this.model.communicativeEvents.map((element) => element.unique),
-            ...this.model.specialisedCommunicativeEvents
-                .map((element) => [
-                    element.unique,
-                    ...element.internalCommunicativeEvent.map((internalEvent) => internalEvent.unique),
-                ])
-                .flat(),
+            ...this.model.specialisedCommunicativeEvents.map((element) => element.unique),
         ];
         ids.forEach((id, index) => {
             if (Array.isArray(id)) {
@@ -66,13 +61,30 @@ export default class Diameter {
 
     // Todos los nodos hijos de un nodo
     private _nodeChildren(nodeId: string): string[] {
+        const specialized = this.model.specialisedCommunicativeEvents.find((event) => event.unique === nodeId);
+
+        if (!specialized) {
+            return this.model.precedenceRelations
+                .filter(
+                    (relation) =>
+                        relation.source === nodeId &&
+                        ![...(this.model.ends ? this.model.ends : [])]
+                            .map((end) => end.unique)
+                            .includes(relation.target)
+                )
+                .map((relation) => relation.target);
+        }
+
         const childrens = this.model.precedenceRelations
             .filter(
                 (relation) =>
-                    relation.source === nodeId &&
+                    [...specialized.internalCommunicativeEvent.map((i) => i.unique), nodeId].includes(
+                        relation.source
+                    ) &&
                     ![...(this.model.ends ? this.model.ends : [])].map((end) => end.unique).includes(relation.target)
             )
-            .map((relation) => relation.target);
+            .reduce<string[]>((ids, rel) => (ids.includes(rel.target) ? ids : [...ids, rel.target]), []);
+
         return childrens;
     }
 
