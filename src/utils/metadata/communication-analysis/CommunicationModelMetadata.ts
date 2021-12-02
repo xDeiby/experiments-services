@@ -234,7 +234,8 @@ export default class CommunicationoModelMetadata extends Diameter {
         communicationMetadata.NumRelsModel = this.numRels();
         communicationMetadata.NumInputRels = this.numRelsType(TypeRel.INPUT);
         communicationMetadata.NumOutputRels = this.numRelsType(TypeRel.OUTPUT);
-        communicationMetadata.NumEvents = this.numNodes();
+        communicationMetadata.NumNodes = this.numNodes();
+        communicationMetadata.NumEvents = this.numComplexEvents() + this.numSimpleEvents();
         communicationMetadata.NumActors = this.numActors();
         communicationMetadata.NumComplexEvents = this.numComplexEvents();
         communicationMetadata.NumSimpleNodes = this.numSimpleEvents();
